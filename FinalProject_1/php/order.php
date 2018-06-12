@@ -1,10 +1,10 @@
 <?php
 require_once ('login.php');
 require_once ('mail.php');
-
 //Инициализируем переменные
 $email = $_POST['email'];
 $name = $_POST['name'];
+$phone = $_POST['phone'];
 $street = $_POST['street'];
 $home = $_POST['home'];
 $part = $_POST['part'];
@@ -28,17 +28,14 @@ try {
     $user_id = $prepare->fetchAll(PDO::FETCH_COLUMN);
     if(count($user_id)==0) {
         //Если пользователя не нашли то добавляем его в таблицу users
-        $prepare = $pdo->prepare("INSERT INTO users (email, user_name) VALUES (:email, :name)");
-        $prepare->execute(['email' => $email, 'name' => $name]);
-        $data = $prepare->fetchAll(PDO::FETCH_OBJ);
+        $prepare = $pdo->prepare("INSERT INTO users (email, user_name, phone) VALUES (:email, :user_name, :phone)");
+        $prepare->execute(['email' => $email, 'user_name' => $name, 'phone' => $phone]);
         //получаем его идентификатор
-        $prepare = $pdo->prepare('SELECT user_id FROM users where email = :email');
-        $prepare->execute(['email' => $email]);
-        $user_id = $prepare->fetchAll(PDO::FETCH_COLUMN);
+        $user_id = $pdo->lastInsertId();
         //и добовляем заказ в таблицу orders
         $prepare = $pdo->prepare("INSERT INTO orders (user_id, street, home, part, appt, floor, order_comment, need_change, card_pay, callback) VALUES (:user_id, :street, :home, :part, :appt, :floor, :order_comment, :need_change, :card_pay, :callback)");
         $order_data = array(
-            'user_id' => $user_id[0],
+            'user_id' => $user_id,
             'street' => $street,
             'home' => $home,
             'part' => $part,
@@ -50,23 +47,21 @@ try {
             'callback' => $callback
         );
         $prepare->execute($order_data);
-        $data = $prepare->fetchAll(PDO::FETCH_ASSOC);
         //Получаем id последнего добавленного заказа
         $order_id = $pdo->lastInsertId();
         //так как пользователя не было то количество заказов не проверяем
-        $ordercount = 1;
+        $order_count = 1;
         //Создаем файл с письмом
-        orderMail ($order_id, $address, $order, $comment, $need_change, $card_pay, $callback, $ordercount);
+        orderMail ($order_id, $address, $phone, $order, $comment, $need_change, $card_pay, $callback, $order_count);
     } else {
         //Если нашли пользователя обновляем его имя на всякий случай вдруг его не было или поменялось
         //наверно стоило сделать выборку и имени и сравнить и его? для оптимизации?
-        $prepare = $pdo->prepare("UPDATE users SET user_name = :name WHERE email = :email");
-        $prepare->execute(['email' => $email, 'name' => $name]);
-        $data = $prepare->fetchAll(PDO::FETCH_OBJ);
+        $prepare = $pdo->prepare("UPDATE users SET user_name = :name, phone = :phone WHERE email = :email");
+        $prepare->execute(['name' => $name, 'phone' => $phone, 'email' => $email]);
         //и дальше так же добавляем заказ в таблицу orders
         $prepare = $pdo->prepare("INSERT INTO orders (user_id, street, home, part, appt, floor, order_comment, need_change, card_pay, callback) VALUES (:user_id, :street, :home, :part, :appt, :floor, :order_comment, :need_change, :card_pay, :callback)");
         $order_data = array(
-            'user_id' => $user_id[0],
+            'user_id' => $user_id,
             'street' => $street,
             'home' => $home,
             'part' => $part,
@@ -78,16 +73,15 @@ try {
             'callback' => $callback
         );
         $prepare->execute($order_data);
-        $data = $prepare->fetchAll(PDO::FETCH_ASSOC);
         //Получаем id последнего добавленного заказа
         $order_id = $pdo->lastInsertId();
         //Получаем количество заказов этим пользователем
         $prepare = $pdo->prepare('SELECT order_id FROM orders where user_id = :user_id');
-        $prepare->execute(['user_id' => $user_id[0]]);
+        $prepare->execute(['user_id' => $user_id]);
         //Если он есть то мы получим его идентификатор
-        $ordercount = count($prepare->fetchAll(PDO::FETCH_COLUMN));
+        $order_count = count($prepare->fetchAll(PDO::FETCH_COLUMN));
         //Создаем файл с письмом
-        orderMail ($order_id, $address, $order, $comment, $need_change, $card_pay, $callback, $ordercount);
+        orderMail ($order_id, $address, $phone, $order, $comment, $need_change, $card_pay, $callback, $order_count);
     }
 } catch (PDOException $e) {
     echo $e->getMessage();
