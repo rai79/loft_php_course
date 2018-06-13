@@ -61,7 +61,7 @@ try {
         //и дальше так же добавляем заказ в таблицу orders
         $prepare = $pdo->prepare("INSERT INTO orders (user_id, street, home, part, appt, floor, order_comment, need_change, card_pay, callback) VALUES (:user_id, :street, :home, :part, :appt, :floor, :order_comment, :need_change, :card_pay, :callback)");
         $order_data = array(
-            'user_id' => $user_id,
+            'user_id' => $user_id[0],
             'street' => $street,
             'home' => $home,
             'part' => $part,
@@ -86,4 +86,4 @@ try {
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
-header('Location: http://'.$_SERVER['HTTP_HOST']);
+//header('Location: http://'.$_SERVER['HTTP_HOST']);
