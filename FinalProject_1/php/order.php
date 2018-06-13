@@ -77,7 +77,7 @@ try {
         $order_id = $pdo->lastInsertId();
         //Получаем количество заказов этим пользователем
         $prepare = $pdo->prepare('SELECT order_id FROM orders where user_id = :user_id');
-        $prepare->execute(['user_id' => $user_id]);
+        $prepare->execute(['user_id' => $user_id[0]]);
         //Если он есть то мы получим его идентификатор
         $order_count = count($prepare->fetchAll(PDO::FETCH_COLUMN));
         //Создаем файл с письмом
@@ -86,4 +86,4 @@ try {
 } catch (PDOException $e) {
     echo $e->getMessage();
 }
-//header('Location: http://'.$_SERVER['HTTP_HOST']);
+header('Location: http://'.$_SERVER['HTTP_HOST']);
