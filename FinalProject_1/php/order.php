@@ -11,9 +11,9 @@ $part = $_POST['part'];
 $appt = $_POST['appt'];
 $floor = $_POST['floor'];
 $comment = $_POST['comment'];
-$need_change = ($_POST['payment'] == 'change') ? true : false;
-$card_pay = ($_POST['payment'] == 'card') ? true : false;
-$callback = isset($_POST['callback']) ? true : false;
+$need_change = ($_POST['payment'] == 'change') ? 1 : 0;
+$card_pay = ($_POST['payment'] == 'card') ? 1 : 0;
+$callback = isset($_POST['callback']) ? 1 : 0;
 $order = 'DarkBeefBurger - 1 шт - 500 рублей';
 $address = 'Улица: ' . $street . ', дом: ' . $home . ', строение: ' . $part . ', квартира: ' . $appt . ', этаж:' . $floor;
 
