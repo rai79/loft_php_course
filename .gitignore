@@ -1,1 +1,4 @@
 .idea
+composer.lock
+Homework_5/vendor/
+Homework_5/public/php/mailconfig.php
