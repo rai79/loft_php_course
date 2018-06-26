@@ -1,4 +1,7 @@
 .idea
-composer.lock
+Homework_5/composer.lock
 Homework_5/vendor/
 Homework_5/public/php/mailconfig.php
+FinalProject_2/.env
+FinalProject_2/composer.lock
+FinalProject_2/vendor/
