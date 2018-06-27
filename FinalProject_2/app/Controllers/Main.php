@@ -39,11 +39,13 @@ class Main extends MainController
             ]);
 
             if ($valid === true) {
-                $name = User::Login($data);
-                if($name) {
+                $result = User::Login($data);
+                if(count($result)) {
                     session_start();
                     $_SESSION['authorized'] = true;
-                    $_SESSION['user'] = $name;
+                    $_SESSION['user'] = $result['name'];
+                    $_SESSION['id'] = $result['id'];
+                    $_SESSION['login'] = $result['login'];
                     header('Location: http://'.$_SERVER['HTTP_HOST'].'/main/auth');
                 }
             } else {

@@ -6,12 +6,29 @@
 
 {% block navigation %}
     <li><a href="\main\logout">Выход</a></li>
+    <li><a href="\image">Загрузить файл</a></li>
     <li class="active"><a href="\users">Список пользователей</a></li>
     <li><a href="\files">Список файлов</a></li>
 {% endblock %}
 
 {% block content %}
     <div class="container">
+        <div class="row d-flex justify-content-center" style="margin: 20px">
+            <div class="col-sm-6">
+                <div class="text-center" >Сортировать по возросту</div>
+                <div class="input-group-btn text-center">
+                    <a class="btn btn-default" href="\users\ageasc" style="margin: 4px">По возростанию</a>
+                    <a class="btn btn-default" href="\users\agedesc" style="margin: 4px">По убыванию</a>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="text-center" >Сортировать по имени</div>
+                <div class="input-group-btn text-center">
+                    <a class="btn btn-default" href="\users\nameasc" style="margin: 4px">По возростанию</a>
+                    <a class="btn btn-default" href="\users\namedesc" style="margin: 4px">По убыванию</a>
+                </div>
+            </div>
+        </div>
         <table class="table table-bordered">
             <tr>
                 <th>Пользователь(логин)</th>

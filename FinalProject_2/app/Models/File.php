@@ -52,4 +52,24 @@ class File extends Model
         return $file->id;
     }
 
+    static public function DeleteById($id) {
+        if ($user = self::find($id)) {
+            try
+            {
+                //удаляем физически файл
+                if (file_exists(PUBLIC_PATH . $user->filename)) {
+                    if (!unlink(PUBLIC_PATH . $user->filename)) {
+                        throw new \Exception("Something wet wrong. File not found");
+                    }
+                }
+                $user->delete();
+            } catch (\Exception $e) {
+                require APPLICATION_PATH."errors/404.php";
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+
 }

@@ -61,6 +61,8 @@ class Register extends MainController
                     session_start();
                     $_SESSION['authorized'] = true;
                     $_SESSION['user'] = $result['name'];
+                    $_SESSION['id'] = $result['id'];
+                    $_SESSION['login'] = $result['login'];
                 } else {
                     throw new \Exception("User not created");
                 }

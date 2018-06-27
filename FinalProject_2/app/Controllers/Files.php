@@ -24,9 +24,7 @@ class Files extends MainController
 
     public function Delete($id) {
         if ($_SESSION['authorized'] === true) {
-            if($filename = File::find($id)) {
-                $filename->delete();
-            };
+            File::DeleteById($id);
             header('Location: http://'.$_SERVER['HTTP_HOST'].'/files/all');
         } else {
             header('Location: http://'.$_SERVER['HTTP_HOST'].'/');

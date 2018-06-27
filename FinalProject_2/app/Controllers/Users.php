@@ -17,7 +17,7 @@ class Users extends MainController
     public function All()
     {
         if ($_SESSION['authorized'] === true) {
-            $data['users'] = User::ShowAll(true);
+            $data['users'] = User::ShowAll();
             $this->view->twigLoad('users', array('data' => $data));
         } else {
             //$this->view->twigLoad('denid', []);
@@ -25,6 +25,41 @@ class Users extends MainController
         }
     }
 
+    public function Ageasc()
+    {
+        if ($_SESSION['authorized'] === true) {
+            $data['users'] = User::ShowByAge();
+            $this->view->twigLoad('users', array('data' => $data));
+        } else {
+            header('Location: http://'.$_SERVER['HTTP_HOST'].'/');
+        }
+    }
+
+    public function Agedesc()
+    {
+        if ($_SESSION['authorized'] === true) {
+            $data['users'] = User::ShowByAge(true);
+            $this->view->twigLoad('users', array('data' => $data));
+        } else {
+            header('Location: http://'.$_SERVER['HTTP_HOST'].'/');
+        }
+    }
+
+    public function Nameasc()
+    {
+        $this->All();
+    }
+
+    public function Namedesc()
+    {
+        if ($_SESSION['authorized'] === true) {
+            $data['users'] = User::ShowAll(true);
+            $this->view->twigLoad('users', array('data' => $data));
+        } else {
+            //$this->view->twigLoad('denid', []);
+            header('Location: http://'.$_SERVER['HTTP_HOST'].'/');
+        }
+    }
 //    Первоначальная реализация
 //    public function AllDesc()
 //    {
@@ -45,10 +80,7 @@ class Users extends MainController
 
     public function Delete($id) {
         if ($_SESSION['authorized'] === true) {
-            if($user = User::find($id)) {
-                $user->delete();
-                File::where('user_id', $id)->delete();
-            };
+            User::DeleteById($id);
             header('Location: http://'.$_SERVER['HTTP_HOST'].'/users/all');
         } else {
             //$this->view->twigLoad('denid', []);

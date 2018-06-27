@@ -34,7 +34,7 @@ class User extends Model
     static public function Login ($data) {
         $user = self::where('login', $data['login'])->get();
         if ($user[0]->password == crypt($data['password'],'a938sA83q0Re04u')) {
-            return $user[0]->name;
+            return array('name' => $user[0]->name, 'id' => $user[0]->id, 'login' => $user[0]->login);
         } else {
             return false;
         }
@@ -50,7 +50,7 @@ class User extends Model
             'avatar' => $avatar
         ];
         $user = self::create($data);
-        return array('name' => $user->name, 'id' =>$user->id);
+        return array('name' => $user->name, 'id' =>$user->id, 'login' => $user->login);
     }
 
     static public function ShowAll($sort_desc = false) {
@@ -74,4 +74,35 @@ class User extends Model
         return $user_list;
     }
 
+    static public function ShowByAge($sort_desc = false) {
+        $users = [];
+        if ($sort_desc) {
+            $users = self::all()->sortByDesc('age');
+        } else {
+            $users = self::all()->sortBy('age');
+        }
+        $user_list = [];
+        foreach ($users as $user) {
+            $user_list[] = array(
+                'id' => $user->id,
+                'login' => $user->login,
+                'name' => $user->name,
+                'age' => $user->age,
+                'description' => $user->description,
+                'avatar' => $user->avatar
+            );
+        }
+        return $user_list;
+    }
+
+    static public function DeleteById($id) {
+        if ($user = self::find($id)) {
+            $user->delete();
+            File::where('user_id', $id)->delete();
+        } else {
+            return false;
+        }
+        
+        return true;
+    }
 }
