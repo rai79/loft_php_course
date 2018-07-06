@@ -1,6 +1,7 @@
 <?php
 require_once ('../../vendor/autoload.php');
 require_once ('login.php');
+require_once ('mail.php');
 require_once ('mailconfig.php');
 
 //Инициализируем переменные

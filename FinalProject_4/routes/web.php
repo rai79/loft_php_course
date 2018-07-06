@@ -12,16 +12,21 @@
 */
 
 Route::get('/', function () {
-    return view('home');
+	//этот код бы куда нибудь перенести ... но КУДА?!
+	$categories = \App\Category::all();
+	$data['categories'] = $categories;
+	$products = \App\Product::orderBy('id', 'DESC')->paginate(6);
+	$data['products'] = $products;
+    return view('home',$data);
 });
 
-Auth::routes();
 //главная страница сайта
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
 //новости и о компании просто грузим шаблон с исходной версткой
 Route::get('/news', 'HomeController@news')->name('news');
 Route::get('/about', 'HomeController@about')->name('about');
 
+Auth::routes();
 //роуты для админки
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminOnly']], function () {
 	Route::get('/', 'AdminController@index')->name('admin.index');// тут выведем форму для выбора что будем редактировать

@@ -27,17 +27,29 @@ class ProductsController extends Controller
 			'email' => 'required|string|email|max:255'
 		]);
 
-		$order = Order::storeOrder($product_id, Auth::user()->id, $request->email, $request->name);
+		if(Auth::check()) {
+			$order = Order::storeOrder($product_id, Auth::user()->id, $request->email, $request->name);
 
-		$notifications = Notification::all();
-		$data['product'] = Product::find($product_id);
-		$data['user_name'] = $request->name;
-		$data['user_email'] = $request->email;
+			$notifications = Notification::all();
+			$data['product'] = Product::find($product_id);
+			$data['user_name'] = $request->name;
+			$data['user_email'] = $request->email;
 
-		foreach ($notifications as $notification) {
-			Mail::to($notification->email)->send(new newOrderPosted($data));
+			foreach ($notifications as $notification) {
+				Mail::to($notification->email)->send(new newOrderPosted($data));
+			}
+		} else {
+			$notifications = Notification::all();
+			$data['product'] = Product::find($product_id);
+			$data['user_name'] = "НЕЗАРЕГИСТРИРОВАН с именем: ".$request->name;
+			$data['user_email'] = $request->email;
+
+			foreach ($notifications as $notification) {
+				Mail::to($notification->email)->send(new newOrderPosted($data));
+			}
 		}
 
-		return redirect()->route('home');
+
+		return redirect('/');
 	}
 }
