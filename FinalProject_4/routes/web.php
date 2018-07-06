@@ -23,8 +23,10 @@ Route::get('/', function () {
 //главная страница сайта
 Route::get('/home', 'HomeController@index')->name('home');
 //новости и о компании просто грузим шаблон с исходной версткой
-Route::get('/news', 'HomeController@news')->name('news');
-Route::get('/about', 'HomeController@about')->name('about');
+Route::get('/news', 'PagesController@news')->name('news');
+Route::get('/about', 'PagesController@about')->name('about');
+//поиск
+Route::post('/search', 'PagesController@search')->name('search');
 
 Auth::routes();
 //роуты для админки

@@ -32,6 +32,12 @@ class Product extends Model
 		}
 	}
 
+	static public function searchProduct($search)
+	{
+		$data = self::where('name','LIKE','%'.$search.'%')->orWhere('description','LIKE','%'.$search.'%')->paginate(6);
+		return $data;
+	}
+
 	public function category()
 	{
 		return $this->belongsTo(Category::class, 'category_id', 'id');

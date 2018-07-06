@@ -42,9 +42,10 @@
             </div>
             <div class="content-head__search-block">
                 <div class="search-container">
-                    <form class="search-container__form">
-                        <input type="text" class="search-container__form__input">
-                        <button class="search-container__form__btn">search</button>
+                    <form class="search-container__form" method="post" action="{{ route('search') }}">
+                        {{csrf_field()}}
+                        <input name="search" type="text" class="search-container__form__input">
+                        <button type="submit" class="search-container__form__btn">search</button>
                     </form>
                 </div>
             </div>

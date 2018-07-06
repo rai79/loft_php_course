@@ -24,10 +24,6 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-	public function defaultIndex()
-	{
-		return $this->index();
-	}
 
     public function index()
     {
@@ -37,19 +33,5 @@ class HomeController extends Controller
 	    $data['products'] = $products;
 	    return view('home', $data);
     }
-
-	public function news()
-	{
-		$categories = Category::all();
-		$data['categories'] = $categories;
-		return view('news', $data);
-	}
-
-	public function about()
-	{
-		$categories = Category::all();
-		$data['categories'] = $categories;
-		return view('about', $data);
-	}
 
 }
