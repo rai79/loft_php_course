@@ -68,8 +68,18 @@
         <div class="flex-center position-ref full-height">
             <div class="content">
                 <p class="title m-b-md">Пользователь {{$user_name}} совершил заказ:</p>
+                @if(isset($product->name))
                 <p class="title m-b-md">{{$product->name}}</p>
-                <p class="title m-b-md">Цена: {{$product->price}} р.</p>
+                @else
+                    @foreach($products as $product)
+                        <p class="title m-b-md">{{$product->name}}</p>
+                    @endforeach
+                @endif
+                @if(isset($full_price))
+                    <p class="title m-b-md">Цена: {{$full_price}} р.</p>
+                @else
+                    <p class="title m-b-md">{{$product->price}}</p>
+                @endif
                 <p class="title m-b-md">Контактный email: {{$user_email}}</p>
             </div>
         </div>

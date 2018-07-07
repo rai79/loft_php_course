@@ -71,3 +71,10 @@ Route::get('/category/{category_id}', 'CategoriesController@category')->name('ca
 //товары
 Route::get('/product/{product_id}', 'ProductsController@product')->name('product');
 Route::post('/product/buy/{product_id}', 'ProductsController@buy')->name('product.buy');
+Route::group(['prefix' => 'cart'], function () {
+	Route::post('/buy', 'CartController@buy')->name('cart.buy');
+	Route::get('/add/{product_id}', 'CartController@add')->name('cart.add');
+	Route::get('/delete/{product_id}', 'CartController@delete')->name('cart.delete');
+	Route::get('/clear', 'CartController@clear')->name('cart.clear');
+	Route::get('/', 'CartController@cart')->name('cart');
+});

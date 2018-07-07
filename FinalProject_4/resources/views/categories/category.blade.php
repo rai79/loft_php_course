@@ -56,7 +56,9 @@
                     <div class="products-category__list__item">
                         <div class="products-category__list__item__title-product"><a href="{{ route('product', ['product_id' => $product->id]) }}">{{$product->name}}</a></div>
                         <div class="products-category__list__item__thumbnail"><a href="{{ route('product', ['product_id' => $product->id]) }}" class="products-category__list__item__thumbnail__link"><img src="{{$product->pic_url}}" alt="Preview-image"></a></div>
-                        <div class="products-category__list__item__description"><span class="products-price">{{$product->price}} руб.</span><a href="#" class="btn btn-blue">Купить</a></div>
+                        <div class="products-category__list__item__description"><span class="products-price">{{$product->price}} руб.</span>
+                            <a href="{{ route('cart.add', ['product_id' => $product->id]) }}" data-product-id="{{$product->id}}" class="btn btn-blue">Купить</a>
+                        </div>
                     </div>
                 @endforeach
             </div>

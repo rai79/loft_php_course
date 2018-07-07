@@ -38,8 +38,21 @@
         <div class="header-container">
             <div class="payment-container">
                 <div class="payment-basket__status">
-                    <div class="payment-basket__status__icon-block"><a class="payment-basket__status__icon-block__link"><i class="fa fa-shopping-basket"></i></a></div>
-                    <div class="payment-basket__status__basket"><span class="payment-basket__status__basket-value">0</span><span class="payment-basket__status__basket-value-descr">товаров</span></div>
+                    <div class="payment-basket__status__icon-block">
+                        <a href="/cart" class="payment-basket__status__icon-block__link">
+                            <i class="fa fa-shopping-basket"></i>
+                        </a>
+                    </div>
+                    <div class="payment-basket__status__basket">
+                        <span id="cart_count" class="payment-basket__status__basket-value">
+                            @if ($count = \Illuminate\Support\Facades\Session::get('cart.count'))
+                                {{$count}}
+                            @else
+                                0
+                            @endif
+                        </span>
+                        <span class="payment-basket__status__basket-value-descr">товаров</span>
+                    </div>
                 </div>
             </div>
             <div class="authorization-block">
